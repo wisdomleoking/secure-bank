@@ -4,3 +4,9 @@ data/*.sqlite
 .env
 .DS_Store
 *.log
+.vscode/
+.vercel/
+dist/
+build/
+coverage/
+*.local
