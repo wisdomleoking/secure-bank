@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureBank - Modern Banking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        accent: '#06b6d4',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sidebar-link {
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-bar {
+            transition: width 1s ease-in-out;
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <!-- Auth Pages -->
+    <div id="auth-container" class="min-h-screen gradient-bg flex items-center justify-center p-4">
+        <!-- Login Form -->
+        <div id="login-form" class="glass rounded-2xl p-8 w-full max-w-md fade-in">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-university text-3xl text-primary"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-white mb-2">SecureBank</h1>
+                <p class="text-white/80">Welcome back! Please login to continue.</p>
+            </div>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-white mb-2 text-sm font-medium">Email</label>
+                    <input type="email" id="loginEmail" required
+                        class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        placeholder="your@email.com">
+                </div>
+                <div>
+                    <label class="block text-white mb-2 text-sm font-medium">Password</label>
+                    <input type="password" id="loginPassword" required
+                        class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        placeholder="••••••••">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center text-white/80">
+                        <input type="checkbox" class="mr-2">
+                        <span class="text-sm">Remember me</span>
+                    </label>
+                    <a href="#" class="text-white/80 hover:text-white text-sm">Forgot password?</a>
+                </div>
+                <button type="submit"
+                    class="w-full bg-white text-primary font-semibold py-3 rounded-lg hover:bg-gray-100 transition-all">
+                    Login
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <p class="text-white/80">Don't have an account?
+                    <a href="#" onclick="showRegister()" class="text-white font-semibold hover:underline">Register</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="register-form" class="glass rounded-2xl p-8 w-full max-w-md fade-in hidden">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-user-plus text-3xl text-primary"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-white mb-2">Create Account</h1>
+                <p class="text-white/80">Join SecureBank for modern banking</p>
+            </div>
+            <form id="registerForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-white mb-2 text-sm font-medium">First Name</label>
+                        <input type="text" id="regFirstName" required
+                            class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
+                            placeholder="John">
+                    </div>
+                    <div>
+                        <label class="block text-white mb-2 text-sm font-medium">Last Name</label>
+                        <input type="text" id="regLastName" required
+                            class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
+                            placeholder="Doe">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-white mb-2 text-sm font-medium">Email</label>
+                    <input type="email" id="regEmail" required
+                        class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        placeholder="your@email.com">
+                </div>
+                <div>
+                    <label class="block text-white mb-2 text-sm font-medium">Password</label>
+                    <input type="password" id="regPassword" required
+                        class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        placeholder="••••••••">
+                </div>
+                <div>
+                    <label class="block text-white mb-2 text-sm font-medium">Confirm Password</label>
+                    <input type="password" id="regConfirmPassword" required
+                        class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        placeholder="••••••••">
+                </div>
+                <button type="submit"
+                    class="w-full bg-white text-primary font-semibold py-3 rounded-lg hover:bg-gray-100 transition-all">
+                    Create Account
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <p class="text-white/80">Already have an account?
+                    <a href="#" onclick="showLogin()" class="text-white font-semibold hover:underline">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app-container" class="flex min-h-screen hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-900 text-white fixed h-full overflow-y-auto">
+            <div class="p-6 border-b border-gray-700">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-university text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold">SecureBank</h1>
+                        <p class="text-xs text-gray-400">Modern Banking</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="p-4 space-y-2">
+                <a href="#" onclick="showPage('dashboard')"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg active" id="nav-dashboard">
+                    <i class="fas fa-home w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" onclick="showPage('accounts')"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg" id="nav-accounts">
+                    <i class="fas fa-wallet w-5"></i>
+                    <span>Accounts</span>
+                </a>
+                <a href="#" onclick="showPage('transactions')"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg" id="nav-transactions">
+                    <i class="fas fa-exchange-alt w-5"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="#" onclick="showPage('transfers')"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg" id="nav-transfers">
+                    <i class="fas fa-paper-plane w-5"></i>
+                    <span>Transfers</span>
+                </a>
+                <a href="#" onclick="showPage('cards')"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg" id="nav-cards">
+                    <i class="fas fa-credit-card w-5"></i>
+                    <span>Cards</span>
+                </a>
+                <a href="#" onclick="showPage('investments')"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg" id="nav-investments">
+                    <i class="fas fa-chart-line w-5"></i>
+                    <span>Investments</span>
+                </a>
+                <a href="#" onclick="showPage('statements')"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg" id="nav-statements">
+                    <i class="fas fa-file-alt w-5"></i>
+                    <span>Statements</span>
+                </a>
+                <a href="#" onclick="showPage('ai-assistant')"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg" id="nav-ai-assistant">
+                    <i class="fas fa-robot w-5"></i>
+                    <span>AI Assistant</span>
+                </a>
+                <a href="#" onclick="showPage('settings')"
+                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg" id="nav-settings">
+                    <i class="fas fa-cog w-5"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-sm" id="userName">User Name</p>
+                            <p class="text-xs text-gray-400" id="userEmail">user@email.com</p>
+                        </div>
+                    </div>
+                    <button onclick="logout()" class="text-gray-400 hover:text-white">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 ml-64 p-8">
+            <!-- Header -->
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800" id="pageTitle">Dashboard</h2>
+                    <p class="text-gray-500" id="pageSubtitle">Welcome back!</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="relative p-2 text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span
+                            class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center"
+                            id="notificationCount">3</span>
+                    </button>
+                    <div class="flex items-center space-x-2 bg-white rounded-lg px-4 py-2 shadow-sm">
+                        <i class="fas fa-search text-gray-400"></i>
+                        <input type="text" placeholder="Search..." class="outline-none text-sm">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div id="page-content">
+                <!-- Dashboard Page -->
+                <div id="page-dashboard" class="page-section fade-in">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-dollar-sign text-2xl text-blue-600"></i>
+                                </div>
+                                <span class="text-green-500 text-sm font-medium"><i class="fas fa-arrow-up"></i>
+                                    12%</span>
+                            </div>
+                            <h3 class="text-gray-500 text-sm">Total Balance</h3>
+                            <p class="text-2xl font-bold text-gray-800" id="totalBalance">$0.00</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-arrow-down text-2xl text-green-600"></i>
+                                </div>
+                                <span class="text-green-500 text-sm font-medium"><i class="fas fa-arrow-up"></i>
+                                    8%</span>
+                            </div>
+                            <h3 class="text-gray-500 text-sm">Income</h3>
+                            <p class="text-2xl font-bold text-gray-800" id="totalIncome">$0.00</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-arrow-up text-2xl text-red-600"></i>
+                                </div>
+                                <span class="text-red-500 text-sm font-medium"><i class="fas fa-arrow-down"></i>
+                                    5%</span>
+                            </div>
+                            <h3 class="text-gray-500 text-sm">Expenses</h3>
+                            <p class="text-2xl font-bold text-gray-800" id="totalExpenses">$0.00</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-piggy-bank text-2xl text-purple-600"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-gray-500 text-sm">Savings Goals</h3>
+                            <p class="text-2xl font-bold text-gray-800" id="savingsGoalsCount">0</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-lg font-semibold text-gray-800">Recent Transactions</h3>
+                                <a href="#" onclick="showPage('transactions')"
+                                    class="text-blue-600 hover:text-blue-700 text-sm">View All</a>
+                            </div>
+                            <div id="recentTransactions" class="space-y-4">
+                                <!-- Transactions will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-6">Quick Actions</h3>
+                            <div class="space-y-3">
+                                <button onclick="showPage('transfers')"
+                                    class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all flex items-center justify-center space-x-2">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Send Money</span>
+                                </button>
+                                <button onclick="showPage('transfers')"
+                                    class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-all flex items-center justify-center space-x-2">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <span>Transfer</span>
+                                </button>
+                                <button onclick="showPage('cards')"
+                                    class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-all flex items-center justify-center space-x-2">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Add Money</span>
+                                </button>
+                                <button onclick="showPage('ai-assistant')"
+                                    class="w-full bg-cyan-600 text-white py-3 rounded-lg hover:bg-cyan-700 transition-all flex items-center justify-center space-x-2">
+                                    <i class="fas fa-robot"></i>
+                                    <span>AI Insights</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accounts Page -->
+                <div id="page-accounts" class="page-section fade-in hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800">Your Accounts</h3>
+                        <button onclick="openAccountModal()"
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all flex items-center space-x-2">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Account</span>
+                        </button>
+                    </div>
+                    <div id="accountsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Accounts will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Transactions Page -->
+                <div id="page-transactions" class="page-section fade-in hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex space-x-4">
+                            <select id="transactionFilter"
+                                class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="all">All Transactions</option>
+                                <option value="credit">Credits</option>
+                                <option value="debit">Debits</option>
+                            </select>
+                            <select id="categoryFilter"
+                                class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="all">All Categories</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Food">Food & Dining</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Bills">Bills & Utilities</option>
+                                <option value="Entertainment">Entertainment</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="transactionsList" class="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <!-- Transactions will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Transfers Page -->
+                <div id="page-transfers" class="page-section fade-in hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-6">Make a Transfer</h3>
+                            <form id="transferForm" class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">From Account</label>
+                                    <select id="fromAccount"
+                                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <!-- Options will be loaded -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">Transfer Type</label>
+                                    <select id="transferType"
+                                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="internal">Internal Transfer</option>
+                                        <option value="external">External Transfer</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">To Account</label>
+                                    <select id="toAccount"
+                                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <!-- Options will be loaded -->
+                                    </select>
+                                </div>
+                                <div id="externalAccountFields" class="hidden space-y-4">
+                                    <div>
+                                        <label class="block text-gray-700 text-sm font-medium mb-2">Account
+                                            Number</label>
+                                        <input type="text" id="toAccountNumber"
+                                            class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 text-sm font-medium mb-2">Routing
+                                            Number</label>
+                                        <input type="text" id="toRoutingNumber"
+                                            class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">Amount</label>
+                                    <div class="relative">
+                                        <span class="absolute left-4 top-3 text-gray-500">$</span>
+                                        <input type="number" id="transferAmount" required min="0.01" step="0.01"
+                                            class="w-full pl-8 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">Notes (Optional)</label>
+                                    <textarea id="transferNotes" rows="3"
+                                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                </div>
+                                <button type="submit"
+                                    class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all font-semibold">
+                                    Transfer Money
+                                </button>
+                            </form>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-6">Recent Transfers</h3>
+                            <div id="recentTransfers" class="space-y-4">
+                                <!-- Transfers will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cards Page -->
+                <div id="page-cards" class="page-section fade-in hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 space-y-6">
+                            <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Cards will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-6">Card Settings</h3>
+                            <div id="cardSettings">
+                                <p class="text-gray-500 text-center py-8">Select a card to view settings</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Investments Page -->
+                <div id="page-investments" class="page-section fade-in hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800">Investment Portfolio</h3>
+                        <button onclick="openInvestmentModal()"
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all flex items-center space-x-2">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Investment</span>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h4 class="text-gray-500 text-sm mb-2">Total Value</h4>
+                            <p class="text-2xl font-bold text-gray-800" id="totalInvestmentValue">$0.00</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h4 class="text-gray-500 text-sm mb-2">Total Return</h4>
+                            <p class="text-2xl font-bold text-green-600" id="totalInvestmentReturn">$0.00</p>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h4 class="text-gray-500 text-sm mb-2">ESG Portfolio</h4>
+                            <p class="text-2xl font-bold text-gray-800" id="esgPercentage">0%</p>
+                        </div>
+                    </div>
+                    <div id="investmentsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Investments will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Statements Page -->
+                <div id="page-statements" class="page-section fade-in hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800">Account Statements</h3>
+                        <button onclick="openStatementModal()"
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all flex items-center space-x-2">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Generate Statement</span>
+                        </button>
+                    </div>
+                    <div id="statementsList" class="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <!-- Statements will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- AI Assistant Page -->
+                <div id="page-ai-assistant" class="page-section fade-in hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2">
+                            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                                <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
+                                    <h3 class="text-xl font-semibold mb-2"><i class="fas fa-robot mr-2"></i>AI Financial
+                                        Assistant</h3>
+                                    <p class="text-white/80">Ask me anything about your finances!</p>
+                                </div>
+                                <div id="chatMessages" class="h-96 overflow-y-auto p-6 space-y-4">
+                                    <div class="flex items-start space-x-3">
+                                        <div
+                                            class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-robot text-purple-600"></i>
+                                        </div>
+                                        <div class="bg-gray-100 rounded-lg p-4 max-w-md">
+                                            <p class="text-gray-700">Hello! I'm your AI financial assistant. How can I
+                                                help you today? You can ask me about your balance, spending, transfers,
+                                                savings goals, or investments.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4 border-t">
+                                    <form id="chatForm" class="flex space-x-4">
+                                        <input type="text" id="chatInput" placeholder="Ask me anything..."
+                                            class="flex-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <button type="submit"
+                                            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-6">Financial Insights</h3>
+                            <div id="aiInsights" class="space-y-4">
+                                <!-- Insights will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div id="page-settings" class="page-section fade-in hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-6">Profile Settings</h3>
+                            <form id="profileForm" class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">First Name</label>
+                                    <input type="text" id="settingsFirstName"
+                                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">Last Name</label>
+                                    <input type="text" id="settingsLastName"
+                                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">Email</label>
+                                    <input type="email" id="settingsEmail"
+                                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">Phone</label>
+                                    <input type="tel" id="settingsPhone"
+                                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <button type="submit"
+                                    class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all">
+                                    Save Changes
+                                </button>
+                            </form>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-6">Security</h3>
+                            <form id="passwordForm" class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">Current Password</label>
+                                    <input type="password" id="currentPassword"
+                                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">New Password</label>
+                                    <input type="password" id="newPassword"
+                                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <button type="submit"
+                                    class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all">
+                                    Change Password
+                                </button>
+                            </form>
+                            <div class="mt-6 pt-6 border-t">
+                                <h4 class="text-md font-semibold text-gray-800 mb-4">Security Settings</h4>
+                                <div class="space-y-4">
+                                    <label class="flex items-center justify-between">
+                                        <span class="text-gray-700">Two-Factor Authentication</span>
+                                        <input type="checkbox" id="twoFactorEnabled"
+                                            class="w-5 h-5 text-blue-600 rounded">
+                                    </label>
+                                    <label class="flex items-center justify-between">
+                                        <span class="text-gray-700">Biometric Login</span>
+                                        <input type="checkbox" id="biometricEnabled"
+                                            class="w-5 h-5 text-blue-600 rounded">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md m-4 fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modalTitle" class="text-lg font-semibold text-gray-800">Modal Title</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="modalContent">
+                <!-- Modal content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast"
+        class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg hidden z-50 fade-in">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
