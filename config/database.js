@@ -2,26 +2,46 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-// Database file path
-const dbPath = path.join(__dirname, '../data/securebank.db');
-
 let db;
 
 // Initialize database connection
 function initializeDatabase() {
     return new Promise((resolve, reject) => {
-        db = new sqlite3.Database(dbPath, (err) => {
-            if (err) {
-                console.error('Error opening database:', err);
-                reject(err);
-            } else {
-                console.log('Connected to SQLite database');
-                createTables()
-                    .then(() => seedInitialData())
-                    .then(() => resolve())
-                    .catch(reject);
-            }
-        });
+        // Use in-memory database for Vercel/serverless environments
+        // Use file-based database for local development
+        const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+
+        if (isVercel) {
+            console.log('🚀 Detected Vercel environment - using in-memory database');
+            db = new sqlite3.Database(':memory:', (err) => {
+                if (err) {
+                    console.error('Error opening in-memory database:', err);
+                    reject(err);
+                } else {
+                    console.log('✅ Connected to in-memory SQLite database');
+                    createTables()
+                        .then(() => seedInitialData())
+                        .then(() => resolve())
+                        .catch(reject);
+                }
+            });
+        } else {
+            // Local development - use file-based database
+            const dbPath = path.join(__dirname, '../data/securebank.db');
+            console.log('💻 Local development - using file-based database');
+            db = new sqlite3.Database(dbPath, (err) => {
+                if (err) {
+                    console.error('Error opening database:', err);
+                    reject(err);
+                } else {
+                    console.log('✅ Connected to SQLite database file');
+                    createTables()
+                        .then(() => seedInitialData())
+                        .then(() => resolve())
+                        .catch(reject);
+                }
+            });
+        }
     });
 }
 
