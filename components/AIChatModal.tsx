@@ -15,7 +15,7 @@ interface Message {
 
 const AIChatModal: React.FC<AIChatModalProps> = ({ user, onClose }) => {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'ai', text: "Hello! I'm your SecureBank Neural Assistant. How can I help you optimize your wealth today?" }
+    { role: 'ai', text: "Hello! I'm your Helious Bank Neural Assistant. How can I help you optimize your wealth today?" }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -78,15 +78,15 @@ const AIChatModal: React.FC<AIChatModalProps> = ({ user, onClose }) => {
 
         <div className="p-8 border-t bg-white shrink-0">
           <div className="flex space-x-4">
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Ask me to analyze your spending or optimize your portfolio..."
               className="flex-grow px-6 py-5 bg-gray-50 border-2 border-transparent focus:border-purple-500 rounded-2xl font-bold outline-none"
             />
-            <button 
+            <button
               onClick={handleSend}
               disabled={isLoading}
               className="bg-indigo-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl hover:shadow-indigo-200 transition-all disabled:opacity-50"

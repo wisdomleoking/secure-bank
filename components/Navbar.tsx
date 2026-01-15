@@ -32,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, currentPage, user, onNaviga
               <i className="fas fa-shield-alt text-white text-lg"></i>
             </div>
             <div>
-              <span className="text-xl font-bold text-gray-900">SecureBank</span>
+              <span className="text-xl font-bold text-gray-900">Helious Bank</span>
               <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full ml-2">PRO</span>
             </div>
           </div>
@@ -40,9 +40,9 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, currentPage, user, onNaviga
           {isLoggedIn && user ? (
             <div className="hidden md:flex items-center space-x-1">
               {navItems.map(item => (
-                <button 
+                <button
                   key={item.id}
-                  onClick={() => onNavigate(item.id)} 
+                  onClick={() => onNavigate(item.id)}
                   className={`px-4 py-2 rounded-lg font-medium transition-all ${currentPage === item.id ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-100'}`}
                 >
                   <i className={`fas ${item.icon} mr-2`}></i>{item.label}
@@ -50,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, currentPage, user, onNaviga
               ))}
 
               <div className="relative ml-4">
-                <button 
+                <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all"
                 >
@@ -63,7 +63,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, currentPage, user, onNaviga
                   </div>
                   <i className={`fas fa-chevron-down text-gray-400 transform transition-transform ${userDropdownOpen ? 'rotate-180' : ''}`}></i>
                 </button>
-                
+
                 {userDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 py-2 z-50 animate-fadeIn">
                     <div className="px-4 py-3 border-b">

@@ -12,15 +12,15 @@ export const getAIResponse = async (userMessage: string, userData: UserData | nu
       Security Score: ${userData.securityScore}%
       Carbon Footprint: ${userData.esgData.carbonFootprint} kg
       Accounts: ${userData.accounts.map(a => `${a.type} ($${a.balance})`).join(', ')}
-      Recent Spending: ${userData.recentTransactions.filter(t => t.amount < 0).slice(0,3).map(t => `${t.description} ($${t.amount})`).join(', ')}
-      Savings Goals: ${userData.savingsGoals.map(g => `${g.name} (${Math.round((g.current/g.target)*100)}% complete)`).join(', ')}
+      Recent Spending: ${userData.recentTransactions.filter(t => t.amount < 0).slice(0, 3).map(t => `${t.description} ($${t.amount})`).join(', ')}
+      Savings Goals: ${userData.savingsGoals.map(g => `${g.name} (${Math.round((g.current / g.target) * 100)}% complete)`).join(', ')}
     ` : 'Guest access mode.';
 
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: userMessage,
       config: {
-        systemInstruction: `You are "Aura", the advanced AI financial consciousness of SecureBank 2025. 
+        systemInstruction: `You are "Aura", the advanced AI financial consciousness of Helious Bank 2025.
         Your tone is professional yet futuristic and helpful. 
         Analyze the user's financial data to provide high-value, predictive insights. 
         Use markdown for formatting. Keep responses concise and focused on wealth optimization.

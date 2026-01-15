@@ -35,9 +35,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             <i className="fas fa-shield-alt text-white text-2xl"></i>
           </div>
           <h2 className="text-3xl font-bold text-gray-900">Neural Gateway</h2>
-          <p className="text-gray-600 mt-2">Welcome back to SecureBank 2025</p>
+          <p className="text-gray-600 mt-2">Welcome back to Helious Bank 2025</p>
         </div>
-        
+
         <div className="mb-10">
           <p className="text-center text-gray-700 mb-6 font-semibold">Biometric Quick-Access</p>
           <div className="grid grid-cols-2 gap-4">
@@ -56,7 +56,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </button>
           </div>
         </div>
-        
+
         {showPassword && (
           <div className="space-y-6 animate-fadeIn">
             <div>
