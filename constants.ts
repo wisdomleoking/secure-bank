@@ -2,14 +2,14 @@
 import { UserData } from './types';
 
 export const INITIAL_USER_DATA: UserData = {
-    name: 'John Anderson',
+    name: 'Jennifer',
     email: 'john.anderson@email.com',
     profilePic: 'JA',
     securityScore: 85,
     accounts: [
-        { id: 1, type: 'Checking', balance: 5420.50, accountNum: '****7892', color: 'blue' },
+        { id: 1, type: 'Checking', balance: 1250487.63, accountNum: '****7892', color: 'blue' },
         { id: 2, type: 'Savings', balance: 12350.75, accountNum: '****4521', color: 'green' },
-        { id: 3, type: 'Credit Card', balance: -850.25, accountNum: '****9103', color: 'purple' },
+        { id: 3, type: 'Credit Card', balance: 0.25, accountNum: '****9103', color: 'purple' },
         { id: 4, type: 'Investment', balance: 24500.00, accountNum: '****6734', color: 'orange' }
     ],
     recentTransactions: [
