@@ -2,7 +2,7 @@
 import { UserData } from './types';
 
 export const INITIAL_USER_DATA: UserData = {
-    name: 'Jennifer',
+    name: 'Jennifer Aniston',
     email: 'john.anderson@email.com',
     profilePic: 'JA',
     securityScore: 85,
